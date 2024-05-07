@@ -1,1 +1,1 @@
-# inft-2202-ice
+# Hi, my name is Meet Pandya and I like computers and programming stuff. I made this repository to submit my ICEs for my course and get them assessed by my proffessor.
