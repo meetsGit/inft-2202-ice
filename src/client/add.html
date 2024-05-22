@@ -23,7 +23,49 @@
     </p>
     <p>You can add animals on this page in future, developement is still in process</p>
   </main>
+
+  <div class="container mt-5">
+    <div class="row">
+    
+        
+        <form id="addForm" method="post">
+          
+            <label for="Name">Name</label>
+            <input type="text" class="form-control" id="name" name="name" >
+            <p class="text-danger d-none" id="name-error">Please type in the name</p>
+          
+          
+            <label for="Breed">Breed</label>
+            <input type="text" class="form-control" id="breed" name="breed" >
+            <p class="text-danger d-none" id="breed-error">Please type in the breed</p>
+
+         
+            <label for="legs">legs</label>
+            <input type="number" class="form-control" id="legs" name="legs" >
+            <p class="text-danger d-none" id="legs-error">Please type in the legs</p>
+
+          
+        
+            <label for="eyes">Eyes</label>
+            <input type="number" class="form-control" id="eyes" name="eyes" rows="5" >
+            <p class="text-danger d-none" id="eyes-error">Please type in the eyes</p>
+
+         
+            <label for="sound">Sound</label>
+            <input class="form-control" id="sound" name="sound" rows="5" >
+            <p class="text-danger d-none" id="sound-error">Please type in the sound</p>
+
+          
+          <button type="submit" class="btn btn-primary">Add Animal</button>
+        </form>
+      </div>
+    </div>
+  
+    
+  
 </body>
+
+<script src="app/add.js"></script>
 
 <footer class="footer mt-auto py-3 bg-body-tertiary">
   <div class="container">
