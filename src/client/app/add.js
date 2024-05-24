@@ -1,4 +1,6 @@
 // src/client/app/contact.js
+import { getAnimals, saveAnimal} from "./animal.service.js";
+getAnimals();
 
 document.getElementById("addForm").addEventListener("submit", function (event) {
   event.preventDefault(); // Prevent the form from submitting and reloading the page
@@ -92,7 +94,7 @@ function putAnimalInStorage(animal) {
 
   if (existingAnimal) {
 
-    alert("An animal with this name already exists.");
+    console.log("An animal with this name already exists.");
   } else {
  
     animalArray.push(animal);
