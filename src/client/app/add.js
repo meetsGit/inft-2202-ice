@@ -101,6 +101,7 @@ function putAnimalInStorage(animal) {
  
     localStorage.setItem('Animals', JSON.stringify(animalArray));
     console.log('Animal added:', animal);
+    
   }
 }
 

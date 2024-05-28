@@ -1,5 +1,3 @@
-
-
 const myContent = document.getElementById('my-content');
 console.log(myContent);
 

@@ -1,27 +1,24 @@
+// src/client/app/animal.service.js
 
 export function getAnimals() {
-    let animals;
-    if(localStorage.getItem('animal')) {
-        animals = JSON.parse(localStorage.getItem('animal'))
-    } else {
-        animals = [];
-
-    }
-
-    return animals;
+  let animals;
+  if (localStorage.getItem('Animals')) {
+    animals = JSON.parse(localStorage.getItem('Animals'));
+  } else {
+    animals = [];
   }
-    
+  return animals;
+}
+
 export function saveAnimal(animal) {
-        
-    if (animal.find(a => a.name === animal.name)) 
-    {
-      return false; 
-    }
-    else {
-        console.log("It already exists, we are not going to store it ")
-    }       
-    animal.push(animal);       
-    localStorage.setItem('Animals', JSON.stringify(animal));    
-    return true; 
+  const animals = getAnimals();
+  if (animals.find(a => a.name === animal.name)) {
+    console.log("Animal already exists");
+    return false;
   }
-  
+  animals.push(animal);
+  localStorage.setItem('Animals', JSON.stringify(animals));
+  console.log("Animal added");
+  return true;
+}
+
