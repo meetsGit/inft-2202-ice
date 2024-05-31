@@ -1,5 +1,3 @@
-// src/client/app/animal.service.js
-
 export function getAnimals() {
   let animals;
   if (localStorage.getItem('Animals')) {
@@ -12,13 +10,34 @@ export function getAnimals() {
 
 export function saveAnimal(animal) {
   const animals = getAnimals();
-  if (animals.find(a => a.name === animal.name)) {
-    console.log("Animal already exists");
-    return false;
+  const animalArray = JSON.parse(localStorage.getItem('Animals')) || [];  
+  const existingAnimal = animalArray.find(a => a.name === animal.name);
+  if (existingAnimal) {
+    console.log("An animal with this name already exists.");
+  } else { 
+    animalArray.push(animal); 
+    localStorage.setItem('Animals', JSON.stringify(animalArray));
+    console.log('Animal added:', animal);    
   }
-  animals.push(animal);
+}
+
+export function deleteAnimal(name) {
+  const animals = getAnimals();
+  const updatedAnimals = animals.filter(animal => animal.name !== name);
+  localStorage.setItem('Animals', JSON.stringify(updatedAnimals)); // Fixed casing here
+}
+
+export function findAnimal(name) {
+  const animals = getAnimals();
+  return animals.find(animal => animal.name === name) || null;
+}
+
+
+export function updateAnimal(object){
+  let animals = getAnimals();
+  let index = animals.findIndex(o => o.name === object.name);
+  animals.splice(index, 1);
+  animals.push(object);
   localStorage.setItem('Animals', JSON.stringify(animals));
-  console.log("Animal added");
-  return true;
 }
 

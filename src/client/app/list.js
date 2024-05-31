@@ -1,45 +1,45 @@
-// src/client/app/list.js
+import { getAnimals, deleteAnimal } from './animal.service.js';
 
-import { getAnimals } from './animal.service.js';
+const messageBox = document.getElementById('message-box');
+const animalTable = document.getElementById('animals-list');
+const tbody = animalTable.querySelector('tbody');
 
-document.addEventListener("DOMContentLoaded", () => {
-  const animals = getAnimals();
-  drawAnimalsTable(animals);
-});
+const animals = getAnimals();
+console.log('Loaded animals:', animals);
+drawAnimalTable(animals);
 
-function drawAnimalsTable(animals) {
-  const animalsList = document.getElementById("animals-list").getElementsByTagName('tbody')[0];
-  animalsList.innerHTML = '';
+function drawAnimalTable(animals) 
+{    
+    if (animals.length === 0) {        
+        messageBox.classList.remove('d-none');
+        animalTable.classList.add('d-none');
+    } else {        
+        messageBox.classList.add('d-none');
+        animalTable.classList.remove('d-none');        
+        tbody.innerHTML = '';   
 
-  animals.forEach(animal => {
-    const row = animalsList.insertRow(-1);
+        animals.forEach(animal => {           
+            const row = tbody.insertRow();            
+            Object.values(animal).forEach(value => {
+                const cell = row.insertCell();
+                cell.textContent = value;
+            });            
+            const buttonCell = row.insertCell();            
+            const deleteButton = document.createElement('button');
 
-    const nameCell = row.insertCell(0);
-    const breedCell = row.insertCell(1);
-    const legsCell = row.insertCell(2);
-    const eyesCell = row.insertCell(3);
-    const soundCell = row.insertCell(4);
-    const actionsCell = row.insertCell(5);
+            deleteButton.classList.add('btn', 'btn-danger', 'btn-sm');            
+            deleteButton.innerHTML = '<i class="fas fa-trash"></i>';            
+            deleteButton.addEventListener('click', () => {
+                deleteAnimal(animal.name);                
+                drawAnimalTable(getAnimals());
+            });            
 
-    nameCell.textContent = animal.name;
-    breedCell.textContent = animal.breed;
-    legsCell.textContent = animal.legs;
-    eyesCell.textContent = animal.eyes;
-    soundCell.textContent = animal.sound;
-
-    const editButton = document.createElement('button');
-    editButton.className = 'btn btn-warning btn-sm';
-    editButton.innerHTML = '<i class="fas fa-edit"></i>';
-    editButton.onclick = () => location.href = `add.html?name=${animal.name}`;
-    actionsCell.appendChild(editButton);
-
-    const deleteButton = document.createElement('button');
-    deleteButton.className = 'btn btn-danger btn-sm';
-    deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
-    deleteButton.onclick = () => {
-      deleteAnimal(animal.name);
-      location.reload();
-    };
-    actionsCell.appendChild(deleteButton);
-  });
+            buttonCell.appendChild(deleteButton);            
+            const editLink = document.createElement('a');
+            editLink.classList.add('btn', 'btn-primary', 'btn-sm', 'ms-2');           
+            editLink.innerHTML = '<i class="fas fa-edit"></i>';            
+            editLink.href = 'add.html?name='+ animal.name;            
+            buttonCell.appendChild(editLink);
+        });
+    }
 }
