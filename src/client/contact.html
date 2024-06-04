@@ -1,72 +1,60 @@
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-    <link rel="stylesheet" 
-    href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
-  
-    <link rel="stylesheet"
-    href="../../node_modules/@fortawesome/fontawesome-free/css/all.min.css">
-    
-    <header class="d-flex justify-content-center py-3">
-      <ul class="nav nav-pills">
-        <li class="nav-item"><a href="index.html" class="nav-link" aria-current="page">Home</a></li>
-        <li class="nav-item"><a href="add.html" class="nav-link">Add</a></li>
-        <li class="nav-item"><a href="list.html" class="nav-link">List</a></li>
-        <li class="nav-item"><a href="contact.html" class="nav-link active">Contact</a></li>
-        <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
-      </ul>
-      <link href="css/style.css" rel="stylesheet">
-    </header>
-  </head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" 
+  href="../../node_modules/bootstrap/dist/css/bootstrap.min.css">
 
-  <body>
+  <link rel="stylesheet"
+  href="../../node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+</head>
+<body>
+  <header class="d-flex justify-content-center py-3">
+    <ul class="nav nav-pills">
+      <li class="nav-item"><a href="index.html" class="nav-link" aria-current="page">Home</a></li>
+      <li class="nav-item"><a href="add.html" class="nav-link">Add</a></li>
+      <li class="nav-item"><a href="list.html" class="nav-link">List</a></li>
+      <li class="nav-item"><a href="contact.html" class="nav-link active">Contact</a></li>
+      <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
+    </ul>
+    <link href="css/style.css" rel="stylesheet">
+  </header>
+  
+  <div class="container">
     <main>
       <div class="col-md-6 offset-md-3">
-      <h1 class="col-md-6 offset-md-3">Contact</h1>
-      <p>
-        
-      </p>
-      <p>You can contact us if you want to add any animals or have any doubts!</p>
-      <p>Contact number - 000-100-0101</p>
+        <h1 class="col-md-6 offset-md-3">Contact</h1>
+        <p>You can contact us if you want to add any animals or have any doubts!</p>
+        <p>Contact number - 000-100-0101</p>
+      </div>
+      
+      <div class="row">
+        <form id="contactForm" method="post" class="col-md-6 offset-md-3">
+          <label for="name">Name</label>
+          <input type="text" class="form-control" id="name" name="name" required>
+          
+          <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="tel" class="form-control" id="phone" name="phone">
+            
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+            
+            <label for="message">Message</label>
+            <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary mt-3">Submit</button>
+        </form>
       </div>
     </main>
+  </div>
 
-    <div class="container mt-5">
-      <div class="row">
-      
-          
-          <form id="contactForm" method="post">
-            
-              <label for="name">Name</label>
-              <input type="text" class="form-control" id="name" name="name" required>
-            
-            <div class="form-group">
-              <label for="phone">Phone</label>
-              <input type="tel" class="form-control" id="phone" name="phone">
-           
-              <label for="email">Email</label>
-              <input type="email" class="form-control" id="email" name="email" required>
-            
-              <label for="message">Message</label>
-              <input class="form-control" id="message" name="message" rows="5" required></input>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-          </form>
-        </div>
-      </div>
-    </div>
-
-    <script src="app/contact.js"></script>
-
-  </body>
+  <script src="../../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="app/contact.js"></script>
 
   <footer class="footer mt-auto py-3 bg-body-tertiary">
     <div class="container">
       <span class="text-body-secondary">© 2024 Meet Pandya</span>
     </div>
   </footer>
-
-  
-
-
-  </html>
+</body>
+</html>
