@@ -53,6 +53,7 @@ function drawAnimalTable(animals, page = 1) {
         });
 
         drawPagination(animals.length);
+
         const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
         tooltipTriggerList.map(function (tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl);
@@ -61,8 +62,8 @@ function drawAnimalTable(animals, page = 1) {
 }
 
 document.getElementById('confirmDelete').addEventListener('click', () => {
-    animals = animals.filter(animal => animal.name !== animalToDelete);
-    localStorage.setItem('animals', JSON.stringify(animals));
+    deleteAnimal(animalToDelete); 
+    animals = getAnimals(); 
     drawAnimalTable(animals, currentPage);
     deleteModal.hide();
 });
@@ -75,6 +76,26 @@ function drawPagination(totalItems) {
         pagination.classList.add('d-none');
     } else {
         pagination.classList.remove('d-none');
+
+        const prevLi = document.createElement('li');
+        prevLi.classList.add('page-item');
+        if (currentPage === 1) {
+            prevLi.classList.add('disabled');
+        }
+        const prevA = document.createElement('a');
+        prevA.classList.add('page-link');
+        prevA.href = '#';
+        prevA.textContent = 'Previous';
+        prevA.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (currentPage > 1) {
+                currentPage--;
+                drawAnimalTable(animals, currentPage);
+            }
+        });
+        prevLi.appendChild(prevA);
+        pagination.appendChild(prevLi);
+
         for (let i = 1; i <= totalPages; i++) {
             const li = document.createElement('li');
             li.classList.add('page-item');
@@ -91,6 +112,25 @@ function drawPagination(totalItems) {
             li.appendChild(a);
             pagination.appendChild(li);
         }
+
+        const nextLi = document.createElement('li');
+        nextLi.classList.add('page-item');
+        if (currentPage === totalPages) {
+            nextLi.classList.add('disabled');
+        }
+        const nextA = document.createElement('a');
+        nextA.classList.add('page-link');
+        nextA.href = '#';
+        nextA.textContent = 'Next';
+        nextA.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (currentPage < totalPages) {
+                currentPage++;
+                drawAnimalTable(animals, currentPage);
+            }
+        });
+        nextLi.appendChild(nextA);
+        pagination.appendChild(nextLi);
     }
 }
 
