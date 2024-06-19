@@ -1,4 +1,4 @@
-import { getAnimals, deleteAnimal } from './animal.service.js';
+import { getAnimals, deleteAnimal } from './animal.service.mock.js';
 
 const messageBox = document.getElementById('message-box');
 const animalTable = document.getElementById('animals-list');

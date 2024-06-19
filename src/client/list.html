@@ -17,6 +17,16 @@
   </header>
   <main class="container flex-grow-1">
     <div class="container">
+      <div id="spinner" class="spinner-border text-primary d-none" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+    
+    <select id="perPageDropdown" class="form-select">
+        <option value="2">2</option>
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="20">20</option>
+    </select>
       <h1>List</h1>
       <p>This page shows the list of animals given shelter nowadays.</p>
       <div id="message-box" class="alert alert-info d-none">No animals available.</div>

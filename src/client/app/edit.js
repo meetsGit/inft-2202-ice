@@ -1,4 +1,4 @@
-import { getAnimals, saveAnimal, updateAnimal } from "./animal.service.js";
+import { getAnimals, saveAnimal, updateAnimal } from "./animal.service.mock.js";
 
 const param = new URL(document.location).searchParams;
 const data = param.get("name");

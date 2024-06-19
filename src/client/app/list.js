@@ -5,30 +5,39 @@ const animalTable = document.getElementById('animals-list');
 const tbody = animalTable.querySelector('tbody');
 const pagination = document.getElementById('pagination');
 const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
-let animals = getAnimals();
+const spinner = document.getElementById('spinner');
+const perPageDropdown = document.getElementById('perPageDropdown');
+
+let animals = [];
 let currentPage = 1;
-const animalsPerPage = 5;
+let animalsPerPage = 5;
 let animalToDelete = null;
+let totalCount = 0;
 
-console.log('Loaded animals:', animals);
+perPageDropdown.addEventListener('change', (event) => {
+    animalsPerPage = parseInt(event.target.value, 10);
+    currentPage = 1; // Reset to the first page when perPage changes
+    updateURLParams();
+    loadPageData();
+});
 
-function drawAnimalTable(animals, page = 1) {
+function drawAnimalTable() {
+    tbody.innerHTML = ''; // Clear the table
+
     if (animals.length === 0) {
         messageBox.classList.remove('d-none');
         animalTable.classList.add('d-none');
     } else {
         messageBox.classList.add('d-none');
         animalTable.classList.remove('d-none');
-        const start = (page - 1) * animalsPerPage;
-        const end = start + animalsPerPage;
-        const paginatedAnimals = animals.slice(start, end);
-        tbody.innerHTML = '';
 
-        paginatedAnimals.forEach(animal => {
+        const columns = ['name', 'breed', 'legs', 'eyes', 'sound'];
+
+        animals.forEach(animal => {
             const row = tbody.insertRow();
-            Object.values(animal).forEach(value => {
+            columns.forEach(key => {
                 const cell = row.insertCell();
-                cell.textContent = value;
+                cell.textContent = animal[key] ?? '';
             });
             const buttonCell = row.insertCell();
 
@@ -52,24 +61,24 @@ function drawAnimalTable(animals, page = 1) {
             buttonCell.appendChild(editLink);
         });
 
-        drawPagination(animals.length);
-
-        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-        tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl);
-        });
+        drawPagination();
+        enableTooltips();
     }
 }
 
-document.getElementById('confirmDelete').addEventListener('click', () => {
-    deleteAnimal(animalToDelete); 
-    animals = getAnimals(); 
-    drawAnimalTable(animals, currentPage);
-    deleteModal.hide();
+
+document.getElementById('confirmDelete').addEventListener('click', async () => {
+    try {
+        await deleteAnimal(animalToDelete);
+        loadPageData();
+        deleteModal.hide();
+    } catch (error) {
+        console.error("Error deleting animal:", error.message);
+    }
 });
 
-function drawPagination(totalItems) {
-    const totalPages = Math.ceil(totalItems / animalsPerPage);
+function drawPagination() {
+    const totalPages = Math.ceil(totalCount / animalsPerPage);
     pagination.innerHTML = '';
 
     if (totalPages <= 1) {
@@ -90,7 +99,8 @@ function drawPagination(totalItems) {
             e.preventDefault();
             if (currentPage > 1) {
                 currentPage--;
-                drawAnimalTable(animals, currentPage);
+                updateURLParams();
+                loadPageData();
             }
         });
         prevLi.appendChild(prevA);
@@ -107,7 +117,8 @@ function drawPagination(totalItems) {
             a.addEventListener('click', (e) => {
                 e.preventDefault();
                 currentPage = i;
-                drawAnimalTable(animals, currentPage);
+                updateURLParams();
+                loadPageData();
             });
             li.appendChild(a);
             pagination.appendChild(li);
@@ -126,7 +137,8 @@ function drawPagination(totalItems) {
             e.preventDefault();
             if (currentPage < totalPages) {
                 currentPage++;
-                drawAnimalTable(animals, currentPage);
+                updateURLParams();
+                loadPageData();
             }
         });
         nextLi.appendChild(nextA);
@@ -134,4 +146,50 @@ function drawPagination(totalItems) {
     }
 }
 
-drawAnimalTable(animals);
+function enableTooltips() {
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+}
+
+function showSpinner() {
+    spinner.classList.remove('d-none');
+    animalTable.classList.add('d-none');
+    messageBox.classList.add('d-none');
+}
+
+function hideSpinner() {
+    spinner.classList.add('d-none');
+    animalTable.classList.remove('d-none');
+}
+
+function updateURLParams() {
+    const params = new URLSearchParams(window.location.search);
+    params.set('page', currentPage);
+    params.set('perPage', animalsPerPage);
+    window.history.replaceState({}, '', `${window.location.pathname}?${params}`);
+}
+
+async function loadPageData() {
+    showSpinner();
+    try {
+        const data = await getAnimals(currentPage, animalsPerPage);
+        animals = data.records;
+        totalCount = data.pagination.count;
+        drawAnimalTable();
+    } catch (error) {
+        console.error('Error loading animals:', error.message);
+        // Handle error message display
+    } finally {
+        hideSpinner();
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    currentPage = parseInt(params.get('page')) || 1;
+    animalsPerPage = parseInt(params.get('perPage')) || 5;
+    perPageDropdown.value = animalsPerPage;
+    loadPageData();
+});
