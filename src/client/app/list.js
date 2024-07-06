@@ -46,9 +46,11 @@ function drawAnimalTable() {
             deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
             deleteButton.setAttribute('data-bs-toggle', 'tooltip');
             deleteButton.setAttribute('title', 'Delete this animal');
-            deleteButton.addEventListener('click', () => {
-                animalToDelete = animal.name;
+            deleteButton.addEventListener('click',async () => {
+                animalToDelete = animal.animalId;
                 deleteModal.show();
+                console.log(animalToDelete)
+                await deleteAnimal(animalToDelete)
             });
             buttonCell.appendChild(deleteButton);
 
@@ -192,4 +194,17 @@ document.addEventListener('DOMContentLoaded', () => {
     animalsPerPage = parseInt(params.get('perPage')) || 5;
     perPageDropdown.value = animalsPerPage;
     loadPageData();
+});
+
+        
+document.getElementById('confirmDelete').addEventListener('click', async () => {
+    if (deleteId) {
+        try {
+            await deleteAnimal(deleteId);
+            loadPageData(); 
+        } catch (error) {
+            console.error('Error deleting animal:', error.message);
+            
+        }
+    }
 });
