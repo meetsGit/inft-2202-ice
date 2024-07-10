@@ -8,7 +8,7 @@ if (data) {
     dname.value = data;
     dname.disabled = true;
 
-    document.getElementById("addForm").addEventListener("submit", function (event) {
+    document.getElementById("addForm").addEventListener("submit", async function (event) {
         event.preventDefault();
         const name = document.getElementById("name").value;
         const breed = document.getElementById("breed").value;
@@ -28,7 +28,7 @@ if (data) {
                 console.log("Sound:", sound);
 
                 try {
-                    updateAnimal({
+                    await updateAnimal({
                         name,
                         breed,
                         legs,

@@ -97,8 +97,9 @@ export async function findAnimal(name) {
 
 // Update an existing animal
 export async function updateAnimal(animal) {
+  console.log(animal)
   try {
-    const response = await fetch(`${API_URL}/${animal.name}`, {
+    const response = await fetch(`${API_URL}/${animal.animalId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -114,9 +115,10 @@ export async function updateAnimal(animal) {
     const updatedAnimal = await response.json();
     console.log('Animal updated:', updatedAnimal);
     displayMessage("Animal updated successfully!", "success");
-    redirectToList();
+  
     return updatedAnimal;
   } catch (error) {
+    console.log(error)
     displayMessage("Error updating animal: " + error.message, "danger");
   }
 }
