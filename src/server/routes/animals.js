@@ -1,44 +1,22 @@
 import express from 'express';
-
+import AnimalsCreateController from '../controller/animals/create.js';
+import AnimalsRetrieveController from '../controller/animals/retrieve.js';
+import updateAnimalController from '../controller/animals/update.js';
+import deleteAnimalController from '../controller/animals/delete.js';
 export const aniRou = express.Router();
 
-// Create an animal
-aniRou.post('/animals', (request, response) => {
-    const headers = {'Content-Type': 'text/plain'}
-    response.writeHead(200, headers);
-    response.end('Animal Created');
-});
-
-// Retrieve all animals
-aniRou.get('/animals', (request, response) => {
-    const headers = {'Content-Type': 'text/plain'}
-    response.writeHead(200, headers);
-    response.end('search animal');
-});
+// create
+aniRou.post('/animals', AnimalsCreateController.handle);
 
 // Retrieve a single animal by ID
-aniRou.get('/animals/:id', (request, response) => {
-    const animalId = request.params.id;
-    const headers = {'Content-Type': 'text/plain'}
-    response.writeHead(200, headers);
-    response.end(`Find animal with id: ${animalId}`);
-});
+aniRou.get('/animals/:animalID', AnimalsRetrieveController.handle);
+
 
 // Update an animal by ID
-aniRou.put('/animals/:id', (request, response) => {
-    const animalId = request.params.id;
-    const headers = {'Content-Type': 'text/plain'}
-    response.writeHead(200, headers);
-    response.end(`Update animal with ID: ${animalId}`);
-});
+aniRou.put('/animals/:animalID', updateAnimalController.handle);
 
 // Delete an animal by ID
-aniRou.delete('/animals/:id', (request, response) => {
-    const animalId = request.params.id;
-    const headers = {'Content-Type': 'text/plain'}
-    response.writeHead(200, headers);
-    response.end(`Delete animal with ID: ${animalId}`);
-});
+aniRou.delete('/animals/:animalID', deleteAnimalController.handle);
 
 // Search for animals (example: using query parameters)
 aniRou.get('/animals/search/:q', (request, response) => {
