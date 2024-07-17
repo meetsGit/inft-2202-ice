@@ -144,8 +144,7 @@ function drawPagination() {
             }
         });
         nextLi.appendChild(nextA);
-        pagination.appendChild(nextLi);
-    }
+        pa
 }
 
 function enableTooltips() {
@@ -207,4 +206,5 @@ document.getElementById('confirmDelete').addEventListener('click', async () => {
             
         }
     }
-});
+});gination.appendChild(nextLi);
+    }

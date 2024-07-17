@@ -1,10 +1,9 @@
 import express from 'express';
-import expRou from './routes/router.js';
-import aniRou from './routes/animals.js';
+import router from './routes/router.js';
+import animalRouter from './routes/animals.js';
 import mongoose from 'mongoose';
 
 const PORT = 3000;
-const exp = express();
 
 // create new instance of http server
 const server = express();
@@ -12,20 +11,22 @@ const server = express();
 server.use(express.json());
 
 // Middleware to parse JSON bodies
-exp.use(express.json());
+server.use(express.json());
 
 // Use the main router
-exp.use(expRou);
+server.use(router);
 
-// Use the animal router
-exp.use(aniRou);
+// autimatically serve static files 
+const localDir = import.meta.dirname;
+server.use(express.static(`${localDir}/../client`));
+server.use('/node_modules',express.static(`${localDir}/../../node_modules`))
 
 try{
     // try to connect to the database
     await mongoose.connect('mongodb://localhost:27017/inft2202');
     console.log('connected to the database');
     // start the server
-    exp.listen(3000, () => {
+    server.listen(3000, () => {
     console.log(`server running at on port ${PORT}`);
 });
 }

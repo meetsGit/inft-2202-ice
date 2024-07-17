@@ -1,27 +1,10 @@
 import express from 'express';
+import {animalRouter} from './animals.js'
+import {contentRouter} from './content.js'
 
-export const expRou = express.Router();
+export const router = express.Router();
 
-/*
-* Start defining our routes.
-*/
-expRou.get('/', (request, response, next) => {
-    const headers = {'Content-Type': 'text/plain'}
-    response.writeHead(200, headers);
-    response.end('main index');
-});
+router.use('/api',animalRouter);
+// router.use(contentRouter);
 
-expRou.get('/about', (request, response, next) => {
-    const headers = {'Content-Type': 'text/plain'}
-    response.writeHead(200, headers);
-    response.end('about');
-});
-
-expRou.get('/contact', (request, response, next) => {
-    const headers = {'Content-Type': 'text/plain'}
-    response.writeHead(200, headers);
-    response.end('contact');
-});
-
-
-export default expRou;
+export default router;
