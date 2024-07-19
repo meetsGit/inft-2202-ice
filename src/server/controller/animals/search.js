@@ -1,4 +1,19 @@
 import Animal from'../../models/Animals.js';
+import { checkSchema } from 'express-validator';
+
+const rules = checkSchema({
+    page : {
+        isNumeric: true,
+        errorMessage: `"page" should be a number!`,
+        
+    },
+    perPage : {
+        isNumeric: true,    
+        errorMessage: `"perPage" should be a number!`,
+        
+    }
+    
+}, ['query']);
 
 const handle = async (request,response,next) => {
     try{
@@ -33,4 +48,4 @@ const handle = async (request,response,next) => {
         next(error);
     }  
 };
-export default {handle};
+export default {handle, rules};
