@@ -1,3 +1,4 @@
+import { conflictError } from '../../errors/ConflictError.js';
 import Animal from'../../models/Animals.js';
 import { checkSchema } from 'express-validator';
 
@@ -29,6 +30,10 @@ const rules = checkSchema({
 const handle = async (request,response,next) => {
     try{
         const{ name, breed, eyes, legs, sound } = request.body;
+        const exists = await Animal.findOne({ name });
+        if (exists) {
+            throw new conflictError('That animal already exists!');
+        }
         const animal = await Animal.create({
             name,
             breed,

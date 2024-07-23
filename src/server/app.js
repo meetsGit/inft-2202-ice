@@ -1,11 +1,12 @@
 import express from 'express';
 import router from './routes/router.js';
-import animalRouter from './routes/animals.js';
+
 import mongoose from 'mongoose';
 
 // import logging stuff
 import { LoggingMiddleware } from './middleware/logging.js';
 import { logger } from './utils/logger.js';
+import { errorHandlingMiddleware } from './middleware/errorHandling.js';
 
 
 // import our new router file
@@ -31,19 +32,7 @@ const localDir = import.meta.dirname;
 server.use(express.static(`${localDir}/../client`));
 server.use('/node_modules',express.static(`${localDir}/../../node_modules`))
 
-server.use((error, request, response, next) => {
-    const { message, stack, statusCode = 500 } = error;
-    const { method, originalUrl, headers, query, body, params,} = request
-    const time = new Date().toISOString();
-    const context = {
-        time,
-        stack,
-        req: { method, path: originalUrl, headers, query,body, params},
-        res : { body: response.locals.data, statusCode}
-    }
-    logger.error(`${statusCode}: $ {message}`, context);
-    response.status(statusCode).send({ error :message });
-    })
+server.use(errorHandlingMiddleware)
     
 try{
     // try to connect to the database

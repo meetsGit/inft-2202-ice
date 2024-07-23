@@ -10,7 +10,7 @@ export const animalRouter = express.Router();
 
 // Search
 animalRouter.get(
-    './animals',
+    '/animals',
     CheckValidation(AnimalSearchController.rules),
     AnimalSearchController.handle);
 
