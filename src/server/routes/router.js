@@ -1,6 +1,6 @@
 import express from 'express';
 import {animalRouter} from './animals.js'
-import {contentRouter} from './content.js'
+
 
 export const router = express.Router();
 

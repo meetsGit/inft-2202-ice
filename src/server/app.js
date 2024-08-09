@@ -1,6 +1,6 @@
 import express from 'express';
 import router from './routes/router.js';
-
+import path from 'path';
 import mongoose from 'mongoose';
 
 // import logging stuff
@@ -29,8 +29,11 @@ server.use(router);
 
 // autimatically serve static files 
 const localDir = import.meta.dirname;
-server.use(express.static(`${localDir}/../client`));
+server.use(express.static(`${localDir}/../../dist`));
 server.use('/node_modules',express.static(`${localDir}/../../node_modules`))
+server.get('*', (req, res, next) => {
+    res.sendFile(path.resolve(import.meta.dirname + '/../../dist/index.html'));
+})
 
 server.use(errorHandlingMiddleware)
     

@@ -15,6 +15,7 @@ const config = {
     entry: './src/client/index.js',
     output: {
         path: path.resolve(import.meta.dirname, 'dist'),
+        clean: true
     },
     devServer: {
         open: true,
@@ -22,7 +23,10 @@ const config = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: './src/client/index.html',
+            template: './src/client/index.ejs',
+            filename: 'index.html',
+            hash: true,
+            inject: 'body'
         }),
 
         new MiniCssExtractPlugin(),
@@ -62,6 +66,18 @@ const config = {
 
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
+            {
+                test: /\.ejs$/,
+                use : {
+                    loader: 'ejs-compiled-loader',
+                    options : {
+                        htmlmin: true,
+                        htmlminOptions: {
+                            removeComments: true
+                        }
+                    }
+                }
+            }
         ],
     },
 };
